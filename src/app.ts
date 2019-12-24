@@ -81,7 +81,7 @@ const tick = async (): Promise<void> => {
       putTopic(
         `『${name}${artists &&
           artists.length &&
-          ` ― ${artists[0].name}`}』を再生中`
+          ` ― ${artists.map((v) => v.name).join(', ')}`}』を再生中`
       );
     }
   } else {
@@ -95,7 +95,7 @@ const tick = async (): Promise<void> => {
 const init = async (): Promise<void> => {
   app.listen(parseInt(process.env.EXPRESS_PORT || '3000'), () => {
     spotifyInit();
-    setInterval(tick, 5000);
+    setInterval(tick, 10000);
     console.log(`listening on port ${process.env.EXPRESS_PORT || '3000'}`);
   });
 };

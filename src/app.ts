@@ -74,6 +74,37 @@ router.post('/', async (req, res, next) => {
 
 router.get('/spotify', getSpotify);
 router.get('/spotify/callback', getSpotifyCallback);
+router.post('/spotify/now', async (_, res) => {
+  res.send(200);
+  const {
+    isPlaying,
+    name,
+    previewUrl,
+    artists,
+    album,
+  } = await getCurrentPlaying();
+  if (isPlaying) {
+    if (album) {
+      postMessage(
+        `『[${name}](${album.external_urls.spotify})${artists &&
+          artists.length &&
+          ` ― [${artists.map((v) => v.name).join(', ')}](${
+            artists[0].external_urls.spotify
+          })`}』を再生しています．\n[視聴する](${previewUrl})`
+      );
+    } else {
+      postMessage(
+        `『${name}${artists &&
+          artists.length &&
+          ` ― [${artists.map((v) => v.name).join(', ')}](${
+            artists[0].external_urls.spotify
+          })`}』を再生しています．\n[視聴する](${previewUrl})`
+      );
+    }
+  } else {
+    postMessage(`再生中の音楽はありません．`);
+  }
+});
 
 let nowPlaying: string;
 
@@ -91,7 +122,7 @@ const tick = async (): Promise<void> => {
   } else {
     if (nowPlaying !== '') {
       nowPlaying = '';
-      putTopic(`再生中の音楽はありません．`);
+      putTopic(`再生中の音楽はありません`);
     }
   }
 };

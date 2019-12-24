@@ -46,13 +46,17 @@ router.post('/', async (req, res, next) => {
             postMessage(
               `『[${name}](${album.external_urls.spotify})${artists &&
                 artists.length &&
-                ` ― [${artists[0].name}](${artists[0].external_urls.spotify})`}』を再生しています．\n[視聴する](${previewUrl})`
+                ` ― [${artists.map((v) => v.name).join(', ')}](${
+                  artists[0].external_urls.spotify
+                })`}』を再生しています．\n[視聴する](${previewUrl})`
             );
           } else {
             postMessage(
               `『${name}${artists &&
                 artists.length &&
-                ` ― [${artists[0].name}](${artists[0].external_urls.spotify})`}』を再生しています．\n[視聴する](${previewUrl})`
+                ` ― [${artists.map((v) => v.name).join(', ')}](${
+                  artists[0].external_urls.spotify
+                })`}』を再生しています．\n[視聴する](${previewUrl})`
             );
           }
         } else {

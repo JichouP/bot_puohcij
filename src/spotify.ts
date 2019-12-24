@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { exec } from 'child_process';
 import Store from './store';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response /* , NextFunction*/ } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import dotenv from 'dotenv';
 
@@ -9,7 +8,7 @@ dotenv.config();
 
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-const redirectUrl = process.env.SPOTIFY_REDIRECT_URL;
+const redirectUrl = process.env.SPOTIFY_REDIRECT_URL || '';
 
 const store = new Store();
 
@@ -24,8 +23,8 @@ export const spotifyInit = (): void => {
 
 export const getSpotify = (
   req: Request<ParamsDictionary>,
-  res: Response,
-  next: NextFunction
+  res: Response
+  // next: NextFunction
 ): void => {
   const scopes = 'user-read-currently-playing';
   res.redirect(
@@ -35,19 +34,19 @@ export const getSpotify = (
       clientId +
       (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
       '&redirect_uri=' +
-      encodeURIComponent(redirectUrl!)
+      encodeURIComponent(redirectUrl)
   );
 };
 
 export const getSpotifyCallback = (
   req: Request<ParamsDictionary>,
-  res: Response,
-  next: NextFunction
+  res: Response
+  // next: NextFunction
 ): void => {
   const params = new URLSearchParams();
   params.append('grant_type', 'authorization_code');
   params.append('code', req.query.code);
-  params.append('redirect_uri', redirectUrl!);
+  params.append('redirect_uri', redirectUrl);
   axios
     .post('https://accounts.spotify.com/api/token', params, {
       headers: {
@@ -70,7 +69,18 @@ export const getSpotifyCallback = (
   res.status(200).send('ok');
 };
 
-export const getCurrentPlaying = () =>
+export const getCurrentPlaying = (): Promise<{
+  isPlaying: boolean;
+  name?: string;
+  previewUrl?: string;
+  artists?: {
+    external_urls: {
+      spotify: string;
+    };
+    name: string;
+  }[];
+  album?: { external_urls: { spotify: string } };
+}> =>
   new Promise<{
     isPlaying: boolean;
     name?: string;

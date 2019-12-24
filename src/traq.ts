@@ -8,23 +8,25 @@ const client = axios.create({
   headers: { Authorization: `Bearer ${botAccessToken}` },
 });
 
-export const getMyChannel = () => {
+export const getMyChannel = (): void => {
   client
     .get('/channels')
     .then((res) => {
-      console.log(res.data.filter((v: any) => v.name === 'JichouP'));
+      console.log(
+        res.data.filter((v: { name: string }) => v.name === 'JichouP')
+      );
     })
     .catch((e) => console.log(e));
 };
 
-export const postMessage = (text: string) => {
+export const postMessage = (text: string): void => {
   client.post(`/channels/${channelId}/messages?embed=1`, { text });
 };
 
-export const postStamp = (stamp: string) => {
-  client.post('');
-};
+// export const postStamp = (stamp: string): void => {
+//   client.post('');
+// };
 
-export const putTopic = (text: string) => {
+export const putTopic = (text: string): void => {
   client.put(`/channels/${channelId}/topic`, { text });
 };

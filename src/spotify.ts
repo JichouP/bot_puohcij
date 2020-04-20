@@ -115,6 +115,6 @@ export const getCurrentPlaying = (): Promise<{
         });
       })
       .catch((e) => {
-        console.log(e.response.data);
+        console.log(e);
       });
   });

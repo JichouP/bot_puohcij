@@ -21,7 +21,7 @@ export const getMyChannel = (): void => {
 
 export const postMessage = (content: string): void => {
   client
-    .post(`/channels/${channelId}/messages?embed=1`, { text: content })
+    .post(`/channels/${channelId}/messages?embed=1`, { content })
     .catch(console.log);
 };
 
@@ -30,7 +30,5 @@ export const postMessage = (content: string): void => {
 // };
 
 export const putTopic = (topic: string): void => {
-  client
-    .put(`/channels/${channelId}/topic`, { text: topic })
-    .catch(console.log);
+  client.put(`/channels/${channelId}/topic`, { topic }).catch(console.log);
 };

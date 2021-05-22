@@ -3,7 +3,7 @@ const channelId = process.env.BOT_CHANNEL_ID || '';
 const botAccessToken = process.env.BOT_ACCESS_TOKEN || '';
 
 const client = axios.create({
-  baseURL: 'https://q.trap.jp/api/1.0',
+  baseURL: 'https://q.trap.jp/api/v3',
   timeout: 1000,
   headers: { Authorization: `Bearer ${botAccessToken}` },
 });
@@ -20,7 +20,9 @@ export const getMyChannel = (): void => {
 };
 
 export const postMessage = (text: string): void => {
-  client.post(`/channels/${channelId}/messages?embed=1`, { text });
+  client
+    .post(`/channels/${channelId}/messages?embed=1`, { text })
+    .catch(console.log);
 };
 
 // export const postStamp = (stamp: string): void => {
@@ -28,5 +30,5 @@ export const postMessage = (text: string): void => {
 // };
 
 export const putTopic = (text: string): void => {
-  client.put(`/channels/${channelId}/topic`, { text });
+  client.put(`/channels/${channelId}/topic`, { text }).catch(console.log);
 };

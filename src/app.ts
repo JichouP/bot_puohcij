@@ -109,14 +109,16 @@ router.post('/spotify/now', async (_, res) => {
 let nowPlaying: string;
 
 const tick = async (): Promise<void> => {
-  const { isPlaying, name, artists } = await getCurrentPlaying();
+  const { isPlaying, name, artists, previewUrl } = await getCurrentPlaying();
   if (isPlaying) {
     if (nowPlaying !== name) {
       nowPlaying = String(name);
       putTopic(
         `『${name}${artists &&
           artists.length &&
-          ` ― ${artists.map((v) => v.name).join(', ')}`}』を再生中`
+          ` ― ${artists
+            .map((v) => v.name)
+            .join(', ')}`}』を再生中  [視聴する]${previewUrl}`
       );
     }
   } else {

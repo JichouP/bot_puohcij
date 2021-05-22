@@ -19,9 +19,9 @@ export const getMyChannel = (): void => {
     .catch((e) => console.log(e));
 };
 
-export const postMessage = (text: string): void => {
+export const postMessage = (content: string): void => {
   client
-    .post(`/channels/${channelId}/messages?embed=1`, { text })
+    .post(`/channels/${channelId}/messages?embed=1`, { text: content })
     .catch(console.log);
 };
 
@@ -29,6 +29,8 @@ export const postMessage = (text: string): void => {
 //   client.post('');
 // };
 
-export const putTopic = (text: string): void => {
-  client.put(`/channels/${channelId}/topic`, { text }).catch(console.log);
+export const putTopic = (topic: string): void => {
+  client
+    .put(`/channels/${channelId}/topic`, { text: topic })
+    .catch(console.log);
 };

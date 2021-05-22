@@ -118,7 +118,7 @@ const tick = async (): Promise<void> => {
           artists.length &&
           ` ― ${artists
             .map((v) => v.name)
-            .join(', ')}`}』を再生中  [視聴する]${previewUrl}`
+            .join(', ')}`}』を再生中  [視聴する](${previewUrl})`
       );
     }
   } else {
